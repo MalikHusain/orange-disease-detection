@@ -108,17 +108,35 @@ def load_model():
             print("Downloading model from Google Drive...")
             os.makedirs(os.path.dirname(MODEL_PATH), exist_ok=True)
             try:
-                import gdown
-                gdown.download(
-                    f"https://drive.google.com/uc?id={gdrive_id}",
-                    MODEL_PATH,
-                    quiet=False
-                )
-                print("Model downloaded successfully!")
+                import requests
+                # Use Google Drive direct download URL
+                url = f"https://drive.google.com/uc?export=download&id={gdrive_id}&confirm=t"
+                session = requests.Session()
+                response = session.get(url, stream=True, timeout=300)
+
+                # Handle Google Drive large file warning page
+                for key, value in response.cookies.items():
+                    if "download_warning" in key:
+                        url = f"https://drive.google.com/uc?export=download&id={gdrive_id}&confirm={value}"
+                        response = session.get(url, stream=True, timeout=300)
+
+                # Save file
+                with open(MODEL_PATH, "wb") as f:
+                    for chunk in response.iter_content(chunk_size=32768):
+                        if chunk:
+                            f.write(chunk)
+
+                file_size = os.path.getsize(MODEL_PATH)
+                print(f"Downloaded successfully! Size: {file_size / 1024 / 1024:.1f} MB")
+
+                if file_size < 1000000:
+                    print("WARNING: File too small, download may have failed")
+                    os.remove(MODEL_PATH)
+
             except Exception as e:
                 print(f"Download failed: {e}")
         else:
-            print(f"WARNING: Model file not found at {MODEL_PATH}")
+            print("WARNING: MODEL_GDRIVE_ID not set")
 
     if os.path.exists(MODEL_PATH):
         print("Loading CNN model...")
@@ -131,6 +149,8 @@ def load_model():
         with open(CLASS_IDX_PATH) as f:
             idx_map = json.load(f)
         class_names = [k for k, v in sorted(idx_map.items(), key=lambda x: x[1])]
+
+
 
 
 def preprocess_image(image_bytes):
