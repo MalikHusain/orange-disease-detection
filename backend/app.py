@@ -398,6 +398,8 @@ def options_handler(path):
 
 
 
+
+load_model()
+
 if __name__ == "__main__":
-    load_model()
     app.run(debug=True, host="0.0.0.0", port=5000)
