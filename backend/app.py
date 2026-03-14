@@ -342,10 +342,24 @@ def chat():
 def get_diseases():
     return jsonify({"diseases": DISEASE_INFO})
 
+@app.after_request
+def add_cors_headers(response):
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+    return response
 
-# ─────────────────────────────────────────
-# Main
-# ─────────────────────────────────────────
+@app.route("/", defaults={"path": ""}, methods=["OPTIONS"])
+@app.route("/<path:path>", methods=["OPTIONS"])
+def options_handler(path):
+    response = jsonify({"status": "ok"})
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+    return response
+
+
+
 if __name__ == "__main__":
     load_model()
     app.run(debug=True, host="0.0.0.0", port=5000)
