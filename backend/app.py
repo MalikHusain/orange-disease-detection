@@ -140,7 +140,7 @@ def load_model():
 
     if os.path.exists(MODEL_PATH):
         print("Loading CNN model...")
-        model = tf.keras.models.load_model(MODEL_PATH)
+        model = tf.keras.models.load_model(MODEL_PATH, compile=False)
         print("Model loaded successfully!")
     else:
         print("Running in image-analysis demo mode")
