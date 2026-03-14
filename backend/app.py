@@ -14,7 +14,7 @@ import tensorflow as tf
 # App Setup
 # ─────────────────────────────────────────
 app = Flask(__name__)
-CORS(app, origins=["http://localhost:3000", "http://localhost:5173"])
+CORS(app)
 
 UPLOAD_FOLDER  = "uploads"
 MODEL_PATH     = "model/orange_disease_cnn.h5"
