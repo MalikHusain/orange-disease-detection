@@ -101,13 +101,31 @@ class_names = CLASS_NAMES[:]
 
 def load_model():
     global model, class_names
+
+    if not os.path.exists(MODEL_PATH):
+        gdrive_id = os.environ.get("MODEL_GDRIVE_ID", "")
+        if gdrive_id:
+            print("Downloading model from Google Drive...")
+            os.makedirs(os.path.dirname(MODEL_PATH), exist_ok=True)
+            try:
+                import gdown
+                gdown.download(
+                    f"https://drive.google.com/uc?id={gdrive_id}",
+                    MODEL_PATH,
+                    quiet=False
+                )
+                print("Model downloaded successfully!")
+            except Exception as e:
+                print(f"Download failed: {e}")
+        else:
+            print(f"WARNING: Model file not found at {MODEL_PATH}")
+
     if os.path.exists(MODEL_PATH):
         print("Loading CNN model...")
         model = tf.keras.models.load_model(MODEL_PATH)
         print("Model loaded successfully!")
     else:
-        print(f"WARNING: Model file not found at {MODEL_PATH}")
-        print("Running in image-analysis demo mode (color/texture based)")
+        print("Running in image-analysis demo mode")
 
     if os.path.exists(CLASS_IDX_PATH):
         with open(CLASS_IDX_PATH) as f:
