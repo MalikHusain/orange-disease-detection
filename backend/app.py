@@ -4,17 +4,17 @@ Routes: /predict, /chat, /history, /health, /diseases
 """
 
 import os, io, json, uuid, base64, datetime
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, make_response
 from flask_cors import CORS
 import numpy as np
 from PIL import Image, ImageStat
 import tensorflow as tf
 
-# ─────────────────────────────────────────
-# App Setup
-# ─────────────────────────────────────────
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}}, 
+     supports_credentials=False,
+     allow_headers=["Content-Type", "Authorization"],
+     methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
 
 UPLOAD_FOLDER  = "uploads"
 MODEL_PATH     = "model/orange_disease_cnn.h5"
@@ -289,8 +289,14 @@ def health():
     })
 
 
-@app.route("/predict", methods=["POST"])
+@app.route("/predict", methods=["POST", "OPTIONS"])
 def predict():
+    if request.method == "OPTIONS":
+        response = make_response()
+        response.headers["Access-Control-Allow-Origin"] = "*"
+        response.headers["Access-Control-Allow-Headers"] = "Content-Type"
+        response.headers["Access-Control-Allow-Methods"] = "POST, OPTIONS"
+        return response
     if "image" not in request.files:
         return jsonify({"error": "No image file provided"}), 400
 
@@ -345,8 +351,14 @@ def get_history():
     return jsonify({"history": prediction_history[:10]})
 
 
-@app.route("/chat", methods=["POST"])
+@app.route("/chat", methods=["POST", "OPTIONS"])
 def chat():
+    if request.method == "OPTIONS":
+        response = make_response()
+        response.headers["Access-Control-Allow-Origin"] = "*"
+        response.headers["Access-Control-Allow-Headers"] = "Content-Type"
+        response.headers["Access-Control-Allow-Methods"] = "POST, OPTIONS"
+        return response
     data = request.get_json()
     if not data or "message" not in data:
         return jsonify({"error": "No message provided"}), 400
