@@ -36,7 +36,7 @@ export default function App() {
 
   // ── Backend health check ─────────────────────────────────────
   useEffect(() => {
-    fetch("http://localhost:5000/health")
+   fetch(`${import.meta.env.VITE_API_URL}/health`)
       .then(r => r.json())
       .then(d => setBackendStatus(d.model_loaded ? "ready" : "demo"))
       .catch(() => setBackendStatus("offline"));

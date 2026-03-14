@@ -34,7 +34,7 @@ export default function UploadPage({ onResult }) {
     try {
       const fd = new FormData();
       fd.append("image", file);
-      const res = await fetch("http://localhost:5000/predict", { method: "POST", body: fd });
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/predict`, { method: "POST", body: fd });
       if (!res.ok) throw new Error(`Server error ${res.status}`);
       const data = await res.json();
       if (data.error) throw new Error(data.error);
