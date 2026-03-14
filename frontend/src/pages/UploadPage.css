@@ -1,0 +1,156 @@
+.upload-page { max-width: 960px; margin: 0 auto; }
+
+.upload-hero { text-align: center; margin-bottom: 36px; }
+.hero-tag {
+  display: inline-block;
+  background: linear-gradient(90deg, #fff7ed, #ffedd5);
+  color: #c2410c;
+  border: 1px solid #fed7aa;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  margin-bottom: 14px;
+}
+.upload-hero .section-title { font-size: 36px; line-height: 1.15; }
+.upload-hero .section-sub { max-width: 520px; margin: 10px auto 0; }
+
+.upload-layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 24px;
+}
+
+/* Card */
+.upload-card { padding: 28px; display: flex; flex-direction: column; gap: 18px; }
+
+/* Dropzone */
+.dropzone {
+  border: 2px dashed #fed7aa;
+  border-radius: 16px;
+  background: #fff7ed;
+  padding: 52px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.25s;
+  text-align: center;
+}
+.dropzone:hover, .dropzone.drag-over {
+  border-color: #f97316;
+  background: #ffedd5;
+  transform: scale(1.01);
+}
+.drop-icon  { font-size: 52px; filter: drop-shadow(0 4px 8px rgba(249,115,22,0.25)); }
+.drop-title { font-size: 17px; font-weight: 600; color: #1c1917; }
+.drop-sub   { font-size: 14px; color: #a8a29e; }
+.drop-formats {
+  display: flex; gap: 8px; margin-top: 6px;
+}
+.drop-formats span {
+  padding: 3px 10px;
+  background: white;
+  border: 1px solid #e7e5e4;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #78716c;
+}
+
+/* Preview */
+.preview-area { border-radius: 14px; overflow: hidden; border: 1px solid #e7e5e4; }
+.preview-toolbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 14px;
+  background: #fafaf9;
+  border-bottom: 1px solid #e7e5e4;
+}
+.preview-filename { font-size: 13px; color: #57534e; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 260px; }
+.clear-btn {
+  font-size: 12px; font-weight: 600; color: #ef4444;
+  background: #fef2f2; border: 1px solid #fecaca; border-radius: 6px;
+  padding: 4px 10px; cursor: pointer;
+}
+.preview-img-wrap { position: relative; }
+.preview-img {
+  width: 100%; max-height: 340px;
+  object-fit: contain;
+  display: block;
+  background: #f5f5f4;
+}
+.preview-overlay {
+  position: absolute; inset: 0; pointer-events: none; overflow: hidden;
+}
+.scan-line {
+  position: absolute; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, #f97316, transparent);
+  animation: scan 2s linear infinite;
+  opacity: 0.7;
+}
+@keyframes scan {
+  from { top: 0; }
+  to   { top: 100%; }
+}
+
+.error-msg {
+  padding: 10px 14px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+  color: #dc2626;
+  font-size: 14px;
+}
+
+.detect-btn {
+  width: 100%;
+  justify-content: center;
+  padding: 14px 24px;
+  font-size: 16px;
+}
+.detect-btn:disabled { opacity: 0.65; cursor: not-allowed; transform: none !important; }
+.spinner {
+  width: 18px; height: 18px;
+  border: 2px solid rgba(255,255,255,0.35);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+/* Info panel */
+.info-panel { display: flex; flex-direction: column; gap: 14px; }
+.info-heading { font-weight: 700; font-size: 15px; color: #292524; margin-bottom: 4px; }
+
+.disease-chip {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 14px;
+  background: white;
+  border: 1px solid #e7e5e4;
+  border-left: 4px solid #e7e5e4;
+  border-radius: 10px;
+  transition: transform 0.15s;
+}
+.disease-chip:hover { transform: translateX(2px); }
+.disease-chip-icon  { font-size: 18px; }
+.disease-chip-name  { font-weight: 600; font-size: 14px; }
+.disease-chip-desc  { font-size: 12px; color: #a8a29e; }
+
+.tip-box {
+  background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+  border: 1px solid #bbf7d0;
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 4px;
+}
+.tip-title { font-weight: 700; font-size: 13px; color: #15803d; margin-bottom: 8px; }
+.tip-box ul { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+.tip-box li { font-size: 13px; color: #166534; padding-left: 16px; position: relative; }
+.tip-box li::before { content: "✓"; position: absolute; left: 0; color: #22c55e; font-weight: 700; }
+
+@media (max-width: 768px) {
+  .upload-layout { grid-template-columns: 1fr; }
+  .upload-hero .section-title { font-size: 26px; }
+}
